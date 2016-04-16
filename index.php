@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-
+<?php 
+include("../../mysqli_connect.php");
+?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -14,7 +16,12 @@
 
     <link href="navbar.css" rel="stylesheet">
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <style>
+      #inventory_edit{
+        display:none;
+      }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -28,11 +35,11 @@
               <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">Auto Inventory Management System</a>
-          </div>
+          </div> <!-- /navbar-header -->
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">About</a></li>
+              <li class="active"><a href="#" id="search_trigger">Search <span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+              <li id="edit_trigger"><a href="#">Edit Inventory <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></li>
               <li><a href="#">Contact</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -56,9 +63,12 @@
         </div><!--/.container-fluid -->
       </nav>
 
+      <div id="inventory_search">
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h2>Welcome!</h2>
+      <h1 class="text-center">Inventory Search</h1>
+        <img class="center-block" style="width:120px" src="nissan_logo.jpg"/>
+        </div> <!-- /jumbotron -->
         <form method="POST">
 		  <div class="form-group">
 		    <label for="model">Model</label>
@@ -68,17 +78,66 @@
 		    <label for="year">Year</label>
 		    <input class="form-control" id="year" name="year" placeholder="Ex: 2004">
 		  </div>
+      <label for="status">Status</label><br/>
+      <label class="radio-inline">
+        <input type="radio" name="status" id="sold" value="sold"> Sold
+      </label>
+      <label class="radio-inline">
+        <input type="radio" name="status" id="onorder" value="onorder"> On order
+      </label>
+      <label class="radio-inline">
+        <input type="radio" name="status" id="instore" value="instore"> In store
+      </label>
+      <br/>
+      <br/>
+      <div>
 		  <button type="submit" class="btn btn-primary">Search Inventory</button>
-		</form>
+		  </div>
+    </form>
     <?php
   include("query_database.php");
 ?>
+</div> <!-- id="inventory_search" -->
 
+      <div id="inventory_edit">
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+      <h1 class="text-center">Inventory Management</h1>
+        <img class="center-block" style="width:120px" src="nissan_logo.jpg"/>
+        </div> <!-- /jumbotron -->
+
+      <h3>Remove from inventory</h3>
+      <form method="POST">
+      <div class="form-group">
+        <label for="stockid">StockID</label>
+        <input class="form-control" id="stockidremove" name="stockidremove" placeholder="1, 4, 9, etc.">
       </div>
-
+      <div class="form-group">
+        <label for="name">Customer Name (Optional)</label>
+        <input class="form-control" id="name" name="name" placeholder="John Smith">
+      </div>
+      <br/>
+      <br/>
+      <div>
+       <button type="submit" class="btn btn-primary">Remove</button>
+      </div>
+    </form>
+  
+</div> <!-- id="inventory_search" -->
     </div> <!-- /container -->
 
     <!-- Bootstrap core javascript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jquery-2.2.3.min.js"></script>
+    <script>
+    $( "#search_trigger" ).click(function() {
+      $( "#inventory_edit" ).hide();
+      $( "#inventory_search" ).show();
+    });
+    $( "#edit_trigger" ).click(function() {
+      $( "#inventory_search" ).hide();
+      $( "#inventory_edit" ).show();
+    });
+    </script>
 </body>
 </html>
